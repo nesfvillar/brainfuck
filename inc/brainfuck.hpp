@@ -13,11 +13,11 @@ namespace bf
     {
     public:
         constexpr Brainfuck(std::string_view program)
-            : VirtualMachine(program), _jump_table(_create_jump_table(program_)) {}
+            : VirtualMachine(program), _jump_table(std::move(_create_jump_table(program_))) {}
 
         constexpr Brainfuck(std::string_view program, std::ostream& ostream, std::istream& istream)
             : VirtualMachine(program, ostream, istream),
-            _jump_table(_create_jump_table(program_)) {}
+            _jump_table(std::move(_create_jump_table(program_))) {}
 
         constexpr Brainfuck(Brainfuck const& bf) noexcept
             : VirtualMachine(bf), _jump_table(bf._jump_table) {}
