@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <cassert>
 #include <exception>
 #include <iostream>
 #include <ranges>
