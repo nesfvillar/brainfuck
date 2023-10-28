@@ -27,7 +27,7 @@ int main(int argc, char** argv)
         std::exit(static_cast<int>(Exit::IfstreamError));
     }
 
-    const std::string program =
+    std::string const program =
         std::views::istream<char>(ifstream) | std::ranges::to<std::string>();
 
     Brainfuck bf{ program };
