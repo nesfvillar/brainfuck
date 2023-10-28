@@ -59,7 +59,7 @@ namespace bf
 
         decltype(auto) run(this auto&& self)
         {
-            while (self.program_iterator_ != self.program_.end())
+            while (self.program_iterator_ != self.program_.end()) [[likely]]
             {
                 self.step();
             }
