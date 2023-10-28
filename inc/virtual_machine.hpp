@@ -1,12 +1,19 @@
 #pragma once
 
 #include <array>
+#include <exception>
 #include <iostream>
 #include <ranges>
 #include <vector>
 
 namespace bf
 {
+    class program_error : public std::exception
+    {
+    public:
+        program_error() : std::exception("program error") {}
+    };
+
     class VirtualMachine
     {
     public:

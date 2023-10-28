@@ -93,7 +93,7 @@ namespace bf
             istream_ >> *data_iterator_;
         }
 
-        void _jump_forward()
+        void _jump_forward() noexcept
         {
             if (*data_iterator_ == 0)
             {
@@ -101,7 +101,7 @@ namespace bf
             }
         }
 
-        void _jump_backward()
+        void _jump_backward() noexcept
         {
             if (*data_iterator_ != 0)
             {
@@ -109,11 +109,9 @@ namespace bf
             }
         }
 
-        std::vector<size_t> static constexpr _create_jump_table(std::vector<Instruction_> const& program)
+        std::vector<size_t> static constexpr _create_jump_table(std::vector<Instruction_> const& program) noexcept(false)
         {
-            std::vector<size_t> jump_table{ std::from_range,
-                std::views::iota(0)
-                | std::views::take(program.size()) };
+            std::vector<size_t> jump_table{ program.size() };
 
             std::vector<size_t> jump_stack;
 
@@ -136,6 +134,12 @@ namespace bf
                     break;
                 }
             }
+
+            if (!jump_stack.empty())
+            {
+                throw program_error{};
+            }
+
             return jump_table;
         }
 
