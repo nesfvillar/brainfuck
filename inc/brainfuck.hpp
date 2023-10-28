@@ -111,7 +111,7 @@ namespace bf
 
         std::vector<size_t> static constexpr _create_jump_table(std::vector<Instruction_> const& program) noexcept(false)
         {
-            std::vector<size_t> jump_table{ program.size() };
+            std::vector<size_t> jump_table(program.size());
 
             std::vector<size_t> jump_stack;
 
