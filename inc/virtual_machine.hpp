@@ -57,7 +57,7 @@ namespace bf
 
         constexpr ~VirtualMachine() noexcept = default;
 
-        decltype(auto) run(this auto&& self)
+        void run(this auto&& self)
         {
             while (self.program_iterator_ != self.program_.end()) [[likely]]
             {
