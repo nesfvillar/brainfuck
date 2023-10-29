@@ -82,8 +82,8 @@ namespace bf
         std::vector<Instruction_> const program_;
         std::vector<Instruction_>::const_iterator program_iterator_ = program_.begin();
 
-        std::array<int, 0x1000> memory_ = {};
-        std::array<int, 0x1000>::iterator data_iterator_ = memory_.begin();
+        std::array<int, 0x8000> memory_ = {};
+        std::array<int, 0x8000>::iterator data_iterator_ = memory_.begin();
 
         std::ostream& ostream_ = std::cout;
         std::istream& istream_ = std::cin;
