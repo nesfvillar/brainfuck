@@ -32,8 +32,7 @@ namespace bf
 
         void step()
         {
-            assert(program_iterator_ != program_.end());
-            switch (*program_iterator_)
+            switch (program_[program_iterator_])
             {
             case Instruction_::IncrementPointer:
                 _increment_data_pointer();
@@ -69,59 +68,57 @@ namespace bf
         void _increment_data_pointer()
         {
             data_iterator_++;
-            if (data_iterator_ == memory_.end())
-            {
-                memory_.push_back(0);
-                data_iterator_ = memory_.end() - 1;
-            }
+            if (data_iterator_ == memory_.size()) [[unlikely]]
+                {
+                    memory_.push_back(0);
+                }
         }
 
         void _decrement_data_pointer()
         {
-            if (data_iterator_ == memory_.begin())
-            {
-                memory_.push_front(0);
-                data_iterator_ = memory_.begin();
-            }
-            else
-            {
-                data_iterator_--;
-            }
+            if (data_iterator_ == 0) [[unlikely]]
+                {
+                    memory_.push_front(0);
+                }
+            else [[likely]]
+                {
+                    data_iterator_--;
+                }
         }
 
         void _increment_data() noexcept
         {
-            (*data_iterator_)++;
+            memory_[data_iterator_]++;
         }
 
         void _decrement_data() noexcept
         {
-            (*data_iterator_)--;
+            memory_[data_iterator_]--;
         }
 
         void _output_data()
         {
-            ostream_ << static_cast<char>(*data_iterator_);
+            ostream_ << static_cast<char>(memory_[data_iterator_]);
         }
 
         void _input_data()
         {
-            istream_ >> *data_iterator_;
+            istream_ >> memory_[data_iterator_];
         }
 
         void _jump_forward() noexcept
         {
-            if (*data_iterator_ == 0)
+            if (memory_[data_iterator_] == 0)
             {
-                program_iterator_ = program_.begin() + _jump_table[program_iterator_ - program_.begin()];
+                program_iterator_ = _jump_table[program_iterator_];
             }
         }
 
         void _jump_backward() noexcept
         {
-            if (*data_iterator_ != 0)
+            if (memory_[data_iterator_] != 0)
             {
-                program_iterator_ = program_.begin() + _jump_table[program_iterator_ - program_.begin()];
+                program_iterator_ = _jump_table[program_iterator_];
             }
         }
 

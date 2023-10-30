@@ -34,21 +34,17 @@ namespace bf
 
         VirtualMachine(VirtualMachine const& vm)
             : program_(vm.program_),
-            program_iterator_(program_.begin() +
-                static_cast<size_t>(vm.program_iterator_ - vm.program_.begin())),
+            program_iterator_(vm.program_iterator_),
             memory_(vm.memory_),
-            data_iterator_(memory_.begin() +
-                static_cast<size_t>(vm.data_iterator_ - vm.memory_.begin())),
+            data_iterator_(vm.data_iterator_),
             ostream_(vm.ostream_),
             istream_(vm.istream_) {}
 
         VirtualMachine(VirtualMachine&& vm) noexcept
             : program_(std::move(vm.program_)),
-            program_iterator_(program_.begin() +
-                static_cast<size_t>(vm.program_iterator_ - vm.program_.begin())),
+            program_iterator_(std::move(vm.program_iterator_)),
             memory_(std::move(vm.memory_)),
-            data_iterator_(memory_.begin() +
-                static_cast<size_t>(vm.data_iterator_ - vm.memory_.begin())),
+            data_iterator_(std::move(vm.data_iterator_)),
             ostream_(vm.ostream_),
             istream_(vm.istream_) {}
 
@@ -60,10 +56,10 @@ namespace bf
 
         void run(this auto&& self)
         {
-            while (self.program_iterator_ != self.program_.end()) [[likely]]
-            {
-                self.step();
-            }
+            while (self.program_iterator_ < self.program_.size()) [[likely]]
+                {
+                    self.step();
+                }
         }
 
     protected:
@@ -80,10 +76,10 @@ namespace bf
         };
 
         std::vector<Instruction_> const program_;
-        std::vector<Instruction_>::const_iterator program_iterator_ = program_.begin();
+        size_t program_iterator_ = 0;
 
         std::deque<int> memory_ = { 0 };
-        std::deque<int>::iterator data_iterator_ = memory_.begin();
+        size_t data_iterator_ = 0;
 
         std::ostream& ostream_ = std::cout;
         std::istream& istream_ = std::cin;
