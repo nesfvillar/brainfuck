@@ -2,29 +2,31 @@
 
 #include "virtual_machine.hpp"
 
+#include <unordered_map>
+
 namespace bf
 {
     class Brainfuck : public VirtualMachine
     {
     public:
-        constexpr Brainfuck(std::string_view program)
-            : VirtualMachine(program), _jump_table(std::move(_create_jump_table(program_))) {}
+        Brainfuck(std::string_view program)
+            : VirtualMachine(program), _jump_map(std::move(_create_jump_map(program_))) {}
 
-        constexpr Brainfuck(std::string_view program, std::ostream& ostream, std::istream& istream)
+        Brainfuck(std::string_view program, std::ostream& ostream, std::istream& istream)
             : VirtualMachine(program, ostream, istream),
-            _jump_table(std::move(_create_jump_table(program_))) {}
+            _jump_map(std::move(_create_jump_map(program_))) {}
 
         Brainfuck() = delete;
 
-        constexpr Brainfuck(Brainfuck const&) = default;
+        Brainfuck(Brainfuck const&) = default;
 
-        constexpr Brainfuck(Brainfuck&&) noexcept = default;
+        Brainfuck(Brainfuck&&) noexcept = default;
 
         Brainfuck& operator=(Brainfuck const&) = delete;
 
         Brainfuck& operator=(Brainfuck&&) = delete;
 
-        constexpr ~Brainfuck() noexcept = default;
+        ~Brainfuck() noexcept = default;
 
         void step()
         {
@@ -98,7 +100,7 @@ namespace bf
         {
             if (*data_iterator_ == 0)
             {
-                program_iterator_ = program_.begin() + _jump_table[program_iterator_ - program_.begin()];
+                program_iterator_ = program_.begin() + _jump_map.at(program_iterator_ - program_.begin());
             }
         }
 
@@ -106,14 +108,13 @@ namespace bf
         {
             if (*data_iterator_ != 0)
             {
-                program_iterator_ = program_.begin() + _jump_table[program_iterator_ - program_.begin()];
+                program_iterator_ = program_.begin() + _jump_map.at(program_iterator_ - program_.begin());
             }
         }
 
-        std::vector<size_t> static constexpr _create_jump_table(std::vector<Instruction_> const& program) noexcept(false)
+        std::unordered_map<size_t, size_t> static _create_jump_map(std::vector<Instruction_> const& program) noexcept(false)
         {
-            std::vector<size_t> jump_table(program.size());
-
+            std::unordered_map<size_t, size_t> jump_map;
             std::vector<size_t> jump_stack;
 
             for (size_t begin_idx{};
@@ -128,8 +129,8 @@ namespace bf
                     begin_idx = jump_stack.back();
                     jump_stack.pop_back();
 
-                    jump_table[begin_idx] = idx;
-                    jump_table[idx] = begin_idx;
+                    jump_map[begin_idx] = idx;
+                    jump_map[idx] = begin_idx;
                     break;
                 [[likely]] default:
                     break;
@@ -141,9 +142,9 @@ namespace bf
                 throw program_error{};
             }
 
-            return jump_table;
+            return jump_map;
         }
 
-        std::vector<size_t> const _jump_table;
+        std::unordered_map<size_t, size_t> const _jump_map;
     };
 }
