@@ -138,6 +138,10 @@ namespace bf
                     jump_stack.push_back(idx);
                     break;
                 case Instruction_::JumpBackward:
+                    if (jump_stack.empty()) [[unlikely]] {
+                        throw program_error{};
+                        }
+
                     begin_idx = jump_stack.back();
                     jump_stack.pop_back();
 
