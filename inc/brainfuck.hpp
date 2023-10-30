@@ -74,11 +74,14 @@ namespace bf
 
         void _decrement_data_pointer()
         {
-            data_iterator_--;
-            if (data_iterator_ == memory_.end())
+            if (data_iterator_ == memory_.begin())
             {
                 memory_.push_front(0);
                 data_iterator_ = memory_.begin();
+            }
+            else
+            {
+                data_iterator_--;
             }
         }
 
