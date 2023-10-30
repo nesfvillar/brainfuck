@@ -28,7 +28,7 @@ namespace bf
 
         Brainfuck& operator=(Brainfuck&&) = delete;
 
-        ~Brainfuck() noexcept = default;
+        ~Brainfuck() = default;
 
         void step()
         {

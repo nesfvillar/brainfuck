@@ -52,7 +52,7 @@ namespace bf
 
         VirtualMachine& operator=(VirtualMachine&&) = delete;
 
-        ~VirtualMachine() noexcept = default;
+        ~VirtualMachine() = default;
 
         void run(this auto&& self)
         {
