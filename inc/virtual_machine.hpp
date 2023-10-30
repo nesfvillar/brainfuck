@@ -32,7 +32,7 @@ namespace bf
 
         VirtualMachine() = delete;
 
-        constexpr VirtualMachine(VirtualMachine const& vm) noexcept
+        constexpr VirtualMachine(VirtualMachine const& vm)
             : program_(vm.program_),
             program_iterator_(program_.begin() +
                 static_cast<size_t>(vm.program_iterator_ - vm.program_.begin())),
