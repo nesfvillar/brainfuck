@@ -16,9 +16,13 @@ namespace bf
 
         Brainfuck() = delete;
 
-        constexpr Brainfuck(Brainfuck const&) = default;
+        Brainfuck(Brainfuck const& bf)
+            : VirtualMachine(bf),
+            _jump_table(bf._jump_table) {}
 
-        constexpr Brainfuck(Brainfuck&&) noexcept = default;
+        Brainfuck(Brainfuck&& bf) noexcept
+            : VirtualMachine(std::move(bf)),
+            _jump_table(std::move(bf._jump_table)) {}
 
         Brainfuck& operator=(Brainfuck const&) = delete;
 
