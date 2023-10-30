@@ -16,7 +16,7 @@ namespace bf
 
         Brainfuck() = delete;
 
-        constexpr Brainfuck(Brainfuck const&) noexcept = default;
+        constexpr Brainfuck(Brainfuck const&) = default;
 
         constexpr Brainfuck(Brainfuck&&) noexcept = default;
 
