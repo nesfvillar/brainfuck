@@ -14,11 +14,17 @@ namespace bf
             : VirtualMachine(program, ostream, istream),
             _jump_table(std::move(_create_jump_table(program_))) {}
 
-        constexpr Brainfuck(Brainfuck const& bf) noexcept
-            : VirtualMachine(bf), _jump_table(bf._jump_table) {}
+        Brainfuck() = delete;
 
-        constexpr Brainfuck(Brainfuck&& bf) noexcept
-            : VirtualMachine(bf), _jump_table(std::move(bf._jump_table)) {}
+        constexpr Brainfuck(Brainfuck const&) noexcept = default;
+
+        constexpr Brainfuck(Brainfuck&&) noexcept = default;
+
+        Brainfuck& operator=(Brainfuck const&) = delete;
+
+        Brainfuck& operator=(Brainfuck&&) = delete;
+
+        constexpr ~Brainfuck() noexcept = default;
 
         void step()
         {
