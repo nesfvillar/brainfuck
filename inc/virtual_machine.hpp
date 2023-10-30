@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cassert>
 #include <deque>
 #include <exception>
 #include <iostream>
