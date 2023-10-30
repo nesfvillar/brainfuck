@@ -7,10 +7,10 @@ namespace bf
     class Brainfuck : public VirtualMachine
     {
     public:
-        constexpr Brainfuck(std::string_view program)
+        Brainfuck(std::string_view program)
             : VirtualMachine(program), _jump_table(std::move(_create_jump_table(program_))) {}
 
-        constexpr Brainfuck(std::string_view program, std::ostream& ostream, std::istream& istream)
+        Brainfuck(std::string_view program, std::ostream& ostream, std::istream& istream)
             : VirtualMachine(program, ostream, istream),
             _jump_table(std::move(_create_jump_table(program_))) {}
 
@@ -62,24 +62,32 @@ namespace bf
         }
 
     private:
-        void constexpr _increment_data_pointer() noexcept
+        void _increment_data_pointer()
         {
             data_iterator_++;
-            assert(data_iterator_ != memory_.end());
+            if (data_iterator_ == memory_.end())
+            {
+                memory_.push_back(0);
+                data_iterator_ = memory_.end() - 1;
+            }
         }
 
-        void constexpr _decrement_data_pointer() noexcept
+        void _decrement_data_pointer()
         {
             data_iterator_--;
-            assert(data_iterator_ != memory_.end());
+            if (data_iterator_ == memory_.end())
+            {
+                memory_.push_front(0);
+                data_iterator_ = memory_.begin();
+            }
         }
 
-        void constexpr _increment_data() noexcept
+        void _increment_data() noexcept
         {
             (*data_iterator_)++;
         }
 
-        void constexpr _decrement_data() noexcept
+        void _decrement_data() noexcept
         {
             (*data_iterator_)--;
         }

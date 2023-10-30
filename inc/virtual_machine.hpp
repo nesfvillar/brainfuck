@@ -1,7 +1,7 @@
 #pragma once
 
-#include <array>
 #include <cassert>
+#include <deque>
 #include <exception>
 #include <iostream>
 #include <ranges>
@@ -18,12 +18,12 @@ namespace bf
     class VirtualMachine
     {
     public:
-        constexpr VirtualMachine(std::string_view program) :
+        VirtualMachine(std::string_view program) :
             program_(std::from_range, program
                 | std::views::filter(_is_valid_opcode)
                 | std::views::transform(_parse_opcode)) {}
 
-        constexpr VirtualMachine(std::string_view program, std::ostream& ostream, std::istream& istream) :
+        VirtualMachine(std::string_view program, std::ostream& ostream, std::istream& istream) :
             program_(std::from_range, program
                 | std::views::filter(_is_valid_opcode)
                 | std::views::transform(_parse_opcode)),
@@ -32,7 +32,7 @@ namespace bf
 
         VirtualMachine() = delete;
 
-        constexpr VirtualMachine(VirtualMachine const& vm)
+        VirtualMachine(VirtualMachine const& vm)
             : program_(vm.program_),
             program_iterator_(program_.begin() +
                 static_cast<size_t>(vm.program_iterator_ - vm.program_.begin())),
@@ -42,7 +42,7 @@ namespace bf
             ostream_(vm.ostream_),
             istream_(vm.istream_) {}
 
-        constexpr VirtualMachine(VirtualMachine&& vm) noexcept
+        VirtualMachine(VirtualMachine&& vm) noexcept
             : program_(std::move(vm.program_)),
             program_iterator_(program_.begin() +
                 static_cast<size_t>(vm.program_iterator_ - vm.program_.begin())),
@@ -82,8 +82,8 @@ namespace bf
         std::vector<Instruction_> const program_;
         std::vector<Instruction_>::const_iterator program_iterator_ = program_.begin();
 
-        std::array<int, 0x8000> memory_ = {};
-        std::array<int, 0x8000>::iterator data_iterator_ = memory_.begin();
+        std::deque<int> memory_ = { 0 };
+        std::deque<int>::iterator data_iterator_ = memory_.begin();
 
         std::ostream& ostream_ = std::cout;
         std::istream& istream_ = std::cin;
