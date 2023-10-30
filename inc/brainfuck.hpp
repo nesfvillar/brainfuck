@@ -7,10 +7,10 @@ namespace bf
     class Brainfuck : public VirtualMachine
     {
     public:
-        Brainfuck(std::string_view program)
+        Brainfuck(std::string_view const program)
             : VirtualMachine(program), _jump_table(std::move(_create_jump_table(program_))) {}
 
-        Brainfuck(std::string_view program, std::ostream& ostream, std::istream& istream)
+        Brainfuck(std::string_view const program, std::ostream& ostream, std::istream& istream)
             : VirtualMachine(program, ostream, istream),
             _jump_table(std::move(_create_jump_table(program_))) {}
 

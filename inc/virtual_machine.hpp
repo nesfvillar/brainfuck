@@ -18,12 +18,12 @@ namespace bf
     class VirtualMachine
     {
     public:
-        VirtualMachine(std::string_view program)
+        VirtualMachine(std::string_view const program)
             : program_(std::from_range, program
                 | std::views::filter(_is_valid_opcode)
                 | std::views::transform(_parse_opcode)) {}
 
-        VirtualMachine(std::string_view program, std::ostream& ostream, std::istream& istream)
+        VirtualMachine(std::string_view const program, std::ostream& ostream, std::istream& istream)
             : program_(std::from_range, program
                 | std::views::filter(_is_valid_opcode)
                 | std::views::transform(_parse_opcode)),
