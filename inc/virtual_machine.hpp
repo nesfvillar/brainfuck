@@ -17,11 +17,6 @@ namespace bf
     class VirtualMachine
     {
     public:
-        VirtualMachine(std::string_view const program)
-            : program_(std::from_range, program
-                | std::views::filter(_is_valid_opcode)
-                | std::views::transform(_parse_opcode)) {}
-
         VirtualMachine(std::string_view const program, std::ostream& ostream, std::istream& istream)
             : program_(std::from_range, program
                 | std::views::filter(_is_valid_opcode)
@@ -80,8 +75,8 @@ namespace bf
         std::deque<int> memory_ = { 0 };
         size_t data_iterator_ = 0;
 
-        std::ostream& ostream_ = std::cout;
-        std::istream& istream_ = std::cin;
+        std::ostream& ostream_;
+        std::istream& istream_;
 
     private:
         bool static constexpr _is_valid_opcode(char const c)

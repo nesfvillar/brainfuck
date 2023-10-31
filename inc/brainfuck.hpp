@@ -9,10 +9,9 @@ namespace bf
     class Brainfuck : public VirtualMachine
     {
     public:
-        Brainfuck(std::string_view const program)
-            : VirtualMachine(program), _jump_map(std::move(_create_jump_map(program_))) {}
-
-        Brainfuck(std::string_view const program, std::ostream& ostream, std::istream& istream)
+        Brainfuck(std::string_view const program,
+            std::ostream& ostream = std::cout,
+            std::istream& istream = std::cin)
             : VirtualMachine(program, ostream, istream),
             _jump_map(std::move(_create_jump_map(program_))) {}
 
