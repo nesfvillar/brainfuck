@@ -81,7 +81,7 @@ namespace bf
     private:
         bool static constexpr _is_valid_opcode(char const c)
         {
-            constexpr std::string_view valid_opcodes{ "><+-.,[]" };
+            std::string_view constexpr valid_opcodes{ "><+-.,[]" };
             return std::ranges::find(valid_opcodes, c) != valid_opcodes.end();
         }
 
